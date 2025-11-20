@@ -1,0 +1,66 @@
+/target/
+############################
+# Maven
+############################
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+############################
+# Eclipse
+############################
+.project
+.classpath
+.settings/
+
+############################
+# IntelliJ (if someone imports)
+############################
+.idea/
+*.iml
+
+############################
+# Logs
+############################
+logs/
+*.log
+
+############################
+# TestNG output folders
+############################
+test-output/
+surefire-reports/
+failure_screenshots/
+ExtentReport/
+
+############################
+# Screenshots
+############################
+src/test/resources/screenshots/
+
+############################
+# Test data (optional)
+############################
+src/test/resources/testdata/*.tmp
+
+############################
+# Compiled classes
+############################
+*.class
+
+############################
+# OS junk files
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Temporary files
+############################
+*.tmp
+*.cache
+
+############################
+# Sensitive config
+############################
+config.properties
+*.properties.bak
