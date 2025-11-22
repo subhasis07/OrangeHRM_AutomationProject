@@ -29,11 +29,13 @@ public class ActionDriver {
 	public void click(By by) {
 		String elementDescription=getElementDescription(by);
 		try {
+			applyBorder(by, "green");
 			waitForElementToBeClickable(by);
 			driver.findElement(by).click();
 			ExtentManager.logStep("Clicked an Element: "+elementDescription);
 			logger.info("Clicked an element --> "+ elementDescription);
 		} catch (Exception e) {
+			applyBorder(by, "red");
 			System.out.println("Unable to click the element: " + e.getMessage());
 			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to click ", elementDescription);
 			logger.error("unable to click the element");
@@ -43,12 +45,14 @@ public class ActionDriver {
 	// Method to enter text
 	public void enterText(By by, String value) {
 		try {
+			applyBorder(by, "green");
 			waitForElementToBeVisible(by);
 			WebElement element = driver.findElement(by);
 			element.clear();
 			element.sendKeys(value);;
 			logger.info("Entered text on: "+getElementDescription(by)+ "-->"+value);
 		} catch (Exception e) {
+			applyBorder(by, "red");
 			logger.error("Unable to enter text in the element: " + e.getMessage());
 		}
 	}
@@ -56,9 +60,11 @@ public class ActionDriver {
 	// Method to get text from an input field
 	public String getText(By by) {
 		try {
+			applyBorder(by, "green");
 			waitForElementToBeVisible(by);
 			return driver.findElement(by).getText();
 		} catch (Exception e) {
+			applyBorder(by, "red");
 			logger.error("unable to get the text: "+e.getMessage());
 			return "";
 		}
@@ -67,13 +73,16 @@ public class ActionDriver {
 	// Method to compare two text
 	public boolean compareText(By by, String expectedText) {
 		try {
+			
 			waitForElementToBeVisible(by);
 			String actualText = driver.findElement(by).getText();
 			if (expectedText.equals(actualText)) {
+				applyBorder(by, "green");
 				logger.info("Text MATCHED");
 				ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "compare text", "Text Verified successfully" + actualText +" equals "+ expectedText);
 				return true;
 			} else {
+				applyBorder(by, "red");
 				logger.error("Text MISMATCHED");
 				ExtentManager.logFailure(BaseClass.getDriver(), "Text Comparision failed!", "Text Comparision failed" + actualText +" not equals "+ expectedText);
 				return false;
@@ -88,12 +97,14 @@ public class ActionDriver {
 	public boolean isDisplayed(By by) {
 		try {
 			waitForElementToBeVisible(by);
+			applyBorder(by, "green");
 			logger.info("Element that displayed: "+ getElementDescription(by));
 			ExtentManager.logStep("Element is Displayed: "+getElementDescription(by));
 			ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Element is Displayed", getElementDescription(by));
 			return driver.findElement(by).isDisplayed();
 			
 		} catch (Exception e) {
+			applyBorder(by, "red");
 			logger.error("Element not displayed: " + e.getMessage());
 			ExtentManager.logFailure(BaseClass.getDriver(), "Element not Displayed: ", "Element is not displayed: "+ getElementDescription(by));
 			return false;
@@ -114,10 +125,12 @@ public class ActionDriver {
 	// scroll to an element
 	public void scrollToelement(By by) {
 		try {
+			applyBorder(by, "green");
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			WebElement element = driver.findElement(by);
 			js.executeScript("arguments[0].scrollIntoView(true);", element);
 		} catch (Exception e) {
+			applyBorder(by, "red");
 			logger.error("Unable to locate element: " + e.getMessage());
 		}
 	}
@@ -193,5 +206,19 @@ public class ActionDriver {
 			return val;
 		}
 		return val.substring(0,maxLength)+"...";
+	}
+	
+	//utility Method to border any element
+	public void applyBorder(By by, String color) {
+		try {
+			WebElement element= driver.findElement(by);
+			String script="arguments[0].style.border='3px solid "+color+"'";
+			JavascriptExecutor js=(JavascriptExecutor) driver;
+			js.executeScript(script, element);
+			logger.info("Applied the color "+ color+ "to the element: "+getElementDescription(by) );
+		} catch (Exception e) {
+			logger.warn("Failed to applied the border");
+		}
+		
 	}
 }
