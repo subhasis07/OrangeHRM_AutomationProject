@@ -32,6 +32,7 @@ public class ExtentManager {
 			spark.config().setTheme(Theme.DARK);
 			
 			extent=new ExtentReports();
+			extent.attachReporter(spark);
 			//Add system Info
 			extent.setSystemInfo("OS", System.getProperty("os.name"));
 			extent.setSystemInfo("Java Version", System.getProperty("java.version"));
@@ -83,13 +84,15 @@ public class ExtentManager {
 	
 	//Log a failure
 	public static void logFailure(WebDriver driver, String logMessage, String screenshotMessage) {
-		getTest().fail(logMessage);
+		String colorMsg=String.format("<span style='color:red;'>%s</span>", logMessage);
+		getTest().fail(colorMsg);
 		attachScreenshot(driver, screenshotMessage);
 	}
 	
 	//log a skip
 	public static void logSkip(String logMessage) {
-		getTest().skip(logMessage);
+		String colorMsg=String.format("<span style='color:orange;'>%s</span>", logMessage);
+		getTest().skip(colorMsg);
 	}
 	
 	//taking ss with date & time
@@ -100,7 +103,7 @@ public class ExtentManager {
 		String timeStamp= new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 		
 		//saving ss in a file
-		String destPath=System.getProperty("user.dir")+"/src/test/resources/ExtentReport/screenshots"+screenShotName+"_"+timeStamp+".png";
+		String destPath=System.getProperty("user.dir")+"/src/test/resources/screenshots/"+screenShotName+"_"+timeStamp+".png";
 		File finalPath = new File(destPath);
 		try {
 			FileUtils.copyFile(src, finalPath);

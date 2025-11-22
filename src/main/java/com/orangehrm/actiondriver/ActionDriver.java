@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.orangehrm.base.BaseClass;
+import com.orangehrm.utilities.ExtentManager;
 
 public class ActionDriver {
 	private WebDriver driver;
@@ -30,9 +31,11 @@ public class ActionDriver {
 		try {
 			waitForElementToBeClickable(by);
 			driver.findElement(by).click();
+			ExtentManager.logStep("Clicked an Element: "+elementDescription);
 			logger.info("Clicked an element --> "+ elementDescription);
 		} catch (Exception e) {
 			System.out.println("Unable to click the element: " + e.getMessage());
+			ExtentManager.logFailure(BaseClass.getDriver(), "Unable to click ", elementDescription);
 			logger.error("unable to click the element");
 		}
 	}
@@ -68,9 +71,11 @@ public class ActionDriver {
 			String actualText = driver.findElement(by).getText();
 			if (expectedText.equals(actualText)) {
 				logger.info("Text MATCHED");
+				ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "compare text", "Text Verified successfully" + actualText +" equals "+ expectedText);
 				return true;
 			} else {
 				logger.error("Text MISMATCHED");
+				ExtentManager.logFailure(BaseClass.getDriver(), "compare text", "Text Comparision failed" + actualText +" not equals "+ expectedText);
 				return false;
 			}
 		} catch (Exception e) {
@@ -84,10 +89,13 @@ public class ActionDriver {
 		try {
 			waitForElementToBeVisible(by);
 			logger.info("Element that displayed: "+ getElementDescription(by));
+			ExtentManager.logStep("Element is Displayed: "+getElementDescription(by));
+			ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Element is Displayed", getElementDescription(by));
 			return driver.findElement(by).isDisplayed();
 			
 		} catch (Exception e) {
 			logger.error("Element not displayed: " + e.getMessage());
+			ExtentManager.logFailure(BaseClass.getDriver(), "Element not Displayed: ", "Element is not displayed: "+ getElementDescription(by));
 			return false;
 		}
 	}
