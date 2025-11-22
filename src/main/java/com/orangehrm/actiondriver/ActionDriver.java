@@ -75,7 +75,7 @@ public class ActionDriver {
 				return true;
 			} else {
 				logger.error("Text MISMATCHED");
-				ExtentManager.logFailure(BaseClass.getDriver(), "compare text", "Text Comparision failed" + actualText +" not equals "+ expectedText);
+				ExtentManager.logFailure(BaseClass.getDriver(), "Text Comparision failed!", "Text Comparision failed" + actualText +" not equals "+ expectedText);
 				return false;
 			}
 		} catch (Exception e) {

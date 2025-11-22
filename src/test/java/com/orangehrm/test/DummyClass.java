@@ -10,7 +10,7 @@ public class DummyClass extends BaseClass{
 	
 	@Test
 	public void dummyTest() {
-		ExtentManager.startTest("Dummy test1 test");
+//		ExtentManager.startTest("Dummy test1 test"); -- commented as this have benn implemented in testlistneres
 		String title=getDriver().getTitle();
 		ExtentManager.logStep("Verifying Title");
 		assert title.equals("OrangeHRM"): "Test Failed";

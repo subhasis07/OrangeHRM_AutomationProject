@@ -41,7 +41,8 @@ public class BaseClass {
 		logger.info("config.properties files loaded");
 		
 		//start the extent report
-		ExtentManager.getReporter();
+//		ExtentManager.getReporter(); -- commented as this have benn implemented in testlistneres
+		
 		
 	}
 
@@ -120,7 +121,7 @@ public class BaseClass {
 //		actionDriver=null;
 		driver.remove();
 		actionDriver.remove();
-		ExtentManager.endTest();
+//		ExtentManager.endTest(); ---- commented as this have benn implemented in testlistneres
 	}
 
 	// Driver getter & setter method
