@@ -4,6 +4,7 @@ import java.util.Map;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.orangehrm.base.BaseClass;
 import com.orangehrm.pages.HomePage;
@@ -25,6 +26,10 @@ public class DBVerificationTest extends BaseClass{
 	
 	@Test(dataProvider = "empVerification",dataProviderClass = DataProviders.class)
 	public void verifyEmployeeNameVerificationFromDB(String empID, String empName) {
+		
+		SoftAssert softAssert= getSoftAssert();
+		
+		
 		ExtentManager.logStep("Loggong with Admin Creds");
 		loginPage.login(prop.getProperty("username"), prop.getProperty("password"));
 		ExtentManager.logStep("Click on PIM Tab");
@@ -43,11 +48,13 @@ public class DBVerificationTest extends BaseClass{
 		String empFirstAndMiddleName=(empFirstName + " "+ empMiddleName).trim();
 		
 		ExtentManager.logStep("Verify the Employee first & middle name");
-		Assert.assertTrue(homePage.verifyFirstAndMiddleName(empFirstAndMiddleName),"First & Middle name are not matching");
+		softAssert.assertTrue(homePage.verifyFirstAndMiddleName(empFirstAndMiddleName),"First & Middle name are not matching");
 		
 		ExtentManager.logStep("Verify the Employee Last name");
-		Assert.assertTrue(homePage.verifyLastName(empLastName),"Employee last name is not matching");
+		softAssert.assertTrue(homePage.verifyLastName(empLastName),"Employee last name is not matching");
 		
 		ExtentManager.logStep("Verification from DB completed");
+		
+		softAssert.assertAll();
 	}
 }

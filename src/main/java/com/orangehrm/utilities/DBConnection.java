@@ -8,20 +8,25 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
+
+import com.orangehrm.base.BaseClass;
+
 public class DBConnection {
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/orangeHRM";
 	private static final String DB_USERNAME = "root";
 	private static final String DB_PASSWORD = "";
-
+	private static final Logger logger= BaseClass.logger;
+	
 	public static Connection getDBConnection() {
 
 		try {
-			System.out.println("Starting DB connection...");
+			logger.info("Starting DB connection...");
 			Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-			System.out.println("DB connection successful");
+			logger.info("DB connection successful");
 			return conn;
 		} catch (SQLException e) {
-			System.out.println("Error while establishing connection");
+			logger.error("Error while establishing connection");
 			e.printStackTrace();
 		}
 		return null;
@@ -36,7 +41,7 @@ public class DBConnection {
 		try (Connection conn = getDBConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet res = stmt.executeQuery(query)) {
-			System.out.println("Executing query ..." + query);
+			logger.info("Executing query ..." + query);
 			if(res.next()) {
 				String firstName=res.getString("emp_firstname");
 				String middleName=res.getString("emp_middlename");
@@ -46,13 +51,13 @@ public class DBConnection {
 				empDetails.put("middleName", middleName!=null?middleName:"");
 				empDetails.put("lastName", lastName);
 				
-				System.out.println("Query executed successfully");
-				System.out.println("Employee data fetched: "+ empDetails);
+				logger.info("Query executed successfully");
+				logger.info("Employee data fetched: "+ empDetails);
 			}else {
-				System.out.println("Employee not found");
+				logger.error("Employee not found");
 			}
 		} catch (Exception e) {
-			System.out.println("Error while fetching data");
+			logger.error("Error while fetching data");
 			e.printStackTrace();
 		}
 		return empDetails;

@@ -19,7 +19,12 @@ public class TestListener implements ITestListener{
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		String testName=result.getMethod().getMethodName();
-		ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Test Passed successfully!", "Test End: " + testName + " ✅ Test Passed");
+		if(!result.getTestClass().getName().toLowerCase().contains("api")) {
+			ExtentManager.logStepWithScreenshot(BaseClass.getDriver(), "Test Passed successfully!", "Test End: " + testName + " ✅ Test Passed");
+		}else {
+			ExtentManager.logStepValidationAPI("Test End: " + testName + " ✅ Test Passed");
+		}
+		
 	}
 
 	@Override
@@ -27,7 +32,12 @@ public class TestListener implements ITestListener{
 		String testName=result.getMethod().getMethodName();
 		String failMsg=result.getThrowable().getMessage();
 		ExtentManager.logStep(failMsg);
-		ExtentManager.logFailure(BaseClass.getDriver(), "Test Failed", "Test End: " + testName + " ❎ Test Failed");
+		if(!result.getTestClass().getName().toLowerCase().contains("api")) {
+			ExtentManager.logFailure(BaseClass.getDriver(), "Test Failed", "Test End: " + testName + " ❎ Test Failed");
+		}else {
+			ExtentManager.logFailureAPI("Test End: " + testName + " ❎ Test Failed");
+		}
+		
 		
 	}
 
